@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recordação de Namoro</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fbe1f4;
+      color: #4b2c20;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-top: 20px;
+      color: #ff66b2;
+    }
+
+    .subtitle {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #ff3399;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .countdown {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      color: #ff3366;
+      font-weight: bold;
+    }
+
+    /* Galeria de Fotos (apenas uma foto por vez) */
+    .photo-container {
+      position: relative;
+      max-width: 100%;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .photos img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    /* Ajuste para imagens panorâmicas */
+    .photos img.panoramic {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    /* Botões de navegação */
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 2rem;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .nav-button-left {
+      left: 10px;
+    }
+
+    .nav-button-right {
+      right: 10px;
+    }
+
+    /* Estilo para o coração pulsante */
+    .heart {
+      position: absolute;
+      font-size: 50px;
+      color: #ff66b2;
+      animation: heartbeat 1s infinite;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes heartbeat {
+      0% {
+        transform: scale(1);
+      }
+      25% {
+        transform: scale(1.1);
+      }
+      50% {
+        transform: scale(1);
+      }
+      75% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .footer {
+      font-size: 1rem;
+      color: #4b2c20;
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #ff66b2;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Media Queries para responsividade em telas menores */
+    @media (max-width: 768px) {
+      .container {
+        width: 90%;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+      }
+
+      .countdown {
+        font-size: 1.2rem;
+      }
+
+      /* Ajustar tamanho dos botões para telas pequenas */
+      .nav-button {
+        padding: 10px;
+        font-size: 1.5rem;
+      }
+
+      /* Ajuste de margem da galeria de fotos */
+      .photo-container {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-button {
+        padding: 8px;
+        font-size: 1.2rem;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .countdown {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="heart">❤️</div>
+  <div class="container">
+    <h1>Nosso Namoro</h1>
+    <p class="subtitle">Cada momento é único!</p>
+
+    <!-- Contador -->
+    <div class="countdown" id="countdown"></div>
+
+    <!-- Galeria de Fotos -->
+    <div class="photo-container">
+      <div class="photos">
+        <!-- Imagens do namoro -->
+        <img src="foto1.jpg" alt="Foto 1" class="photo">
+        <img src="foto2.jpg" alt="Foto 2" class="photo">
+        <img src="foto3.jpg" alt="Foto 3" class="photo">
+        <img src="foto4.jpg" alt="Foto 4" class="photo">
+        <img src="foto5.jpg" alt="Foto 5" class="photo">
+        <img src="foto6.jpg" alt="Foto 6" class="photo">
+        <img src="foto7.jpg" alt="Foto 7" class="photo panoramic">
+        <img src="foto8.jpg" alt="Foto 8" class="photo">
+        <img src="foto9.jpg" alt="Foto 9" class="photo">
+      </div>
+
+      <!-- Botões de navegação -->
+      <button class="nav-button nav-button-left" onclick="prevPhoto()">❮</button>
+      <button class="nav-button nav-button-right" onclick="nextPhoto()">❯</button>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <div class="footer">
+    <p>Feito com 💖 por Joãozinho</p>
+  </div>
+
+  <script>
+    // Função para calcular o tempo desde o início
+    const startDate = new Date("May 1, 2019 00:00:00").getTime();
+
+    function updateCounter() {
+      const now = new Date().getTime();
+      const timeElapsed = now - startDate;
+
+      // Calculando os anos, meses, dias, horas, minutos e segundos
+      const years = Math.floor(timeElapsed / (1000 * 60 * 60 * 24 * 365.25));
+      const months = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30));
+      const days = Math.floor((timeElapsed % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeElapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeElapsed % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+
+      // Exibindo o contador de tempo
+      document.getElementById("countdown").innerHTML = `Já se passaram ${years} anos, ${months} meses, ${days} dias, ${hours} horas, ${minutes} minutos e ${seconds} segundos juntos!`;
+    }
+
+    // Atualizar o contador a cada segundo
+    setInterval(updateCounter, 1000);
+
+    // Galeria de fotos (apenas uma foto visível por vez)
+    let currentIndex = 0;
+
+    const photos = document.querySelectorAll('.photos img');
+
+    function showPhoto(index) {
+      // Esconde todas as fotos
+      photos.forEach(photo => photo.style.display = 'none');
+      // Mostra a foto atual
+      photos[index].style.display = 'block';
+    }
+
+    function nextPhoto() {
+      currentIndex = (currentIndex + 1) % photos.length;  // Vai para a próxima foto ou volta para a primeira
+      showPhoto(currentIndex);
+    }
+
+    function prevPhoto() {
+      currentIndex = (currentIndex - 1 + photos.length) % photos.length;  // Vai para a foto anterior ou para a última
+      showPhoto(currentIndex);
+    }
+
+    // Exibir a primeira foto ao carregar a página
+    showPhoto(currentIndex);
+  </script>
+</body>
+</html>
